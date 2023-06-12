@@ -1,4 +1,3 @@
-import { SearchIcon } from "lucide-solid";
 import { Component, JSX, createSignal } from "solid-js";
 import { SearchBar } from "./Searchbar.jsx";
 import { MenuButton } from "./MenuButton.jsx";

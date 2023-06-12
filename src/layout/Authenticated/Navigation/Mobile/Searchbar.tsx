@@ -1,5 +1,5 @@
-import { SearchIcon } from "lucide-solid";
-import { Component, JSX } from "solid-js";
+import { MagnifyingGlassIcon } from "solid-phosphor/regular";
+import { Component } from "solid-js";
 
 export const SearchBar: Component = () => {
   return (
@@ -7,7 +7,7 @@ export const SearchBar: Component = () => {
       <div class="mx-auto w-full max-w-xs">
         <div class="relative text-white focus-within:text-gray-600">
           <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-            <SearchIcon class="w-5" />
+            <MagnifyingGlassIcon class="w-5" />
           </div>
           <input
             id="desktop-search"

@@ -1,5 +1,5 @@
 import { A } from "@solidjs/router";
-import { BellIcon, LogInIcon } from "lucide-solid";
+import { BellIcon, SignInIcon } from "solid-phosphor/regular";
 import { Component } from "solid-js";
 
 export const TopNav: Component = () => {
@@ -30,7 +30,7 @@ export const TopNav: Component = () => {
         href="/auth/redirect"
         class="inline-flex items-center ml-4 pt-1 border-b-2 border-transparent text-sm font-medium text-indigo-200 hover:text-white hover:border-white"
       >
-        <LogInIcon />
+        <SignInIcon />
       </A>
     </div>
   );

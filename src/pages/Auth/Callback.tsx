@@ -5,31 +5,14 @@ import {
   createResource,
   createSignal,
 } from "solid-js";
-import {
-  startAuthentication,
-  startRegistration,
-} from "@simplewebauthn/browser";
-import {
-  AuthenticationResponseJSON,
-  RegistrationResponseJSON,
-} from "@simplewebauthn/typescript-types";
 import { plexOauth } from "../../util/plex.js";
-import { useGraphQL } from "../../GraphQLProvider.jsx";
-import {
-  PlexAuthenticationMutationResponse,
-  PlexAuthenticationMutationVariables,
-  plexAuthenticationMutation,
-} from "../../graphql/plexAuthentication.js";
-import { Loader2Icon, LoaderIcon } from "lucide-solid";
-import {
-  WebauthnMutationResponse,
-  WebauthnMutationVariables,
-  webauthnMutation,
-} from "../../graphql/webauthn.js";
+import { CircleNotchIcon, SpinnerIcon } from "solid-phosphor/regular";
 import { startWebauthn } from "../../util/auth.js";
+import { useClient } from "../../hooks/useClient.jsx";
+import { AuthService } from "@buf/scrobble-moe_protobufs.bufbuild_connect-es/moe/scrobble/auth/v1/auth_service_connect.js";
 
 export const Callback: Component = () => {
-  const { client } = useGraphQL();
+  const authClient = useClient(AuthService)();
 
   const [webAuthnResponse, setWebAuthnResponse] = createSignal<string>();
 
@@ -40,32 +23,21 @@ export const Callback: Component = () => {
     plexOauth.checkForAuthToken(pin),
   );
   const [plexAuthenticationResource] = createResource(plexTokenResource, () =>
-    client
-      .mutation<
-        PlexAuthenticationMutationResponse,
-        PlexAuthenticationMutationVariables
-      >(plexAuthenticationMutation, {
-        plexToken: plexTokenResource.latest,
-      })
-      .toPromise(),
+    authClient.plexAuth({
+      plexToken: plexTokenResource.latest,
+    }),
   );
   const [webauthnResource] = createResource(webAuthnResponse, () => {
-    client
-      .mutation<WebauthnMutationResponse, WebauthnMutationVariables>(
-        webauthnMutation,
-        {
-          plexToken: plexTokenResource.latest,
-          verification: webAuthnResponse(),
-        },
-      )
-      .toPromise();
+    authClient.webAuthn({
+      plexToken: plexTokenResource.latest,
+      verification: webAuthnResponse(),
+    });
   });
 
   createEffect(async () => {
     if (plexAuthenticationResource.latest) {
-      const { type, webauthnOptions } =
-        plexAuthenticationResource.latest.data.plexAuthentication;
-      setWebAuthnResponse(await startWebauthn(type, webauthnOptions));
+      const { webauthnOptions } = plexAuthenticationResource.latest;
+      setWebAuthnResponse(await startWebauthn(webauthnOptions));
     }
   });
 
@@ -75,7 +47,7 @@ export const Callback: Component = () => {
         when={plexTokenResource.loading || plexAuthenticationResource.loading}
       >
         <div class="m-auto">
-          <Loader2Icon class="animate-spin text-gray-700 w-16 h-16" />
+          <CircleNotchIcon class="animate-spin text-gray-700 w-16 h-16" />
         </div>
       </Show>
       <Show
@@ -94,24 +66,16 @@ export const Callback: Component = () => {
       >
         <div>
           <img
-            src={
-              plexAuthenticationResource.latest.data.plexAuthentication.plexUser
-                .avatar
-            }
+            src={plexAuthenticationResource.latest.avatarUrl}
             alt="Plex Avatar"
           />
-          <p>
-            {
-              plexAuthenticationResource.latest.data.plexAuthentication.plexUser
-                .username
-            }
-          </p>
+          <p>{plexAuthenticationResource.latest.username}</p>
         </div>
       </Show>
 
       <Show when={webauthnResource.loading}>
         <div class="m-auto">
-          <LoaderIcon class="animate-spin text-gray-700 w-16 h-16" />
+          <SpinnerIcon class="animate-spin text-gray-700 w-16 h-16" />
         </div>
       </Show>
       <Show when={webauthnResource.latest}>

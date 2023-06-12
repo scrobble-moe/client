@@ -1,4 +1,3 @@
-import { SearchIcon } from "lucide-solid";
 import { Component, JSX, createSignal } from "solid-js";
 import { Searchbar } from "./Searchbar.js";
 import { NavLink } from "./NavLink.jsx";

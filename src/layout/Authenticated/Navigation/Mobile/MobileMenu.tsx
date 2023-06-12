@@ -1,4 +1,4 @@
-import { GrapeIcon, XIcon } from "lucide-solid";
+import { GraphIcon, XIcon } from "solid-phosphor/regular";
 import { Accessor, Component, Setter } from "solid-js";
 import { NavLink } from "./NavLink.js";
 import { Popover } from "@kobalte/core";
@@ -40,7 +40,7 @@ export const MobileMenu: Component<MobileNavProps> = (props) => {
             <div class="divide-y divide-gray-200 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
               <div class="pb-2 pt-3">
                 <div class="flex items-center justify-between px-4">
-                  <GrapeIcon class="text-fuchsia-700" />
+                  <GraphIcon class="text-fuchsia-700" />
                   <div class="-mr-2">
                     <button
                       onClick={() => props.setOpen(false)}

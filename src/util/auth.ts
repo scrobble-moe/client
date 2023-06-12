@@ -2,24 +2,24 @@ import {
   startAuthentication,
   startRegistration,
 } from "@simplewebauthn/browser";
-import { WebauthnAction } from "../graphql/plexAuthentication.js";
+
+import { PlexAuthResponse } from "@buf/scrobble-moe_protobufs.bufbuild_es/moe/scrobble/auth/v1/auth_pb.js";
 
 export const startWebauthn = async (
-  type: WebauthnAction,
-  webauthnOptions: string,
+  webauthnOptions: Pick<PlexAuthResponse, "webauthnOptions">["webauthnOptions"],
 ) => {
   let webauthnResponse: string;
-  switch (type) {
-    case "AUTHENTICATION":
-      await startAuthentication(JSON.parse(atob(webauthnOptions))).then(
+  switch (webauthnOptions.case) {
+    case "request":
+      await startAuthentication(JSON.parse(atob(webauthnOptions.value))).then(
         (response) => {
           webauthnResponse = btoa(JSON.stringify(response));
         },
       );
       break;
 
-    case "REGISTRATION":
-      await startRegistration(JSON.parse(atob(webauthnOptions))).then(
+    case "create":
+      await startRegistration(JSON.parse(atob(webauthnOptions.value))).then(
         (response) => {
           webauthnResponse = btoa(JSON.stringify(response));
         },
