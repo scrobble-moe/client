@@ -1,4 +1,3 @@
-import "@fontsource/vt323";
 import { Route, Routes } from "@solidjs/router";
 import type { Component } from "solid-js";
 import "./index.css";
