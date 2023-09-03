@@ -1,3 +1,4 @@
+import { AuthService } from "@buf/scrobble-moe_protobufs.bufbuild_connect-es/moe/scrobble/auth/v1/auth_service_connect.js";
 import {
   Component,
   Show,
@@ -5,11 +6,11 @@ import {
   createResource,
   createSignal,
 } from "solid-js";
-import { plexOauth } from "../../util/plex.js";
-import { CircleNotchIcon, SpinnerIcon } from "solid-phosphor/regular";
-import { startWebauthn } from "../../util/auth.js";
 import { useClient } from "../../hooks/useClient.jsx";
-import { AuthService } from "@buf/scrobble-moe_protobufs.bufbuild_connect-es/moe/scrobble/auth/v1/auth_service_connect.js";
+// import { CircleNotchIcon, SpinnerIcon } from "solid-phosphor/regular";
+import { startWebauthn } from "../../util/auth.js";
+import { plexOauth } from "../../util/plex.js";
+import { Card } from "../UI.jsx";
 
 export const Callback: Component = () => {
   const authClient = useClient(AuthService)();
@@ -35,19 +36,26 @@ export const Callback: Component = () => {
   });
 
   createEffect(async () => {
+    console.log(plexAuthenticationResource.latest);
+
     if (plexAuthenticationResource.latest) {
       const { webauthnOptions } = plexAuthenticationResource.latest;
       setWebAuthnResponse(await startWebauthn(webauthnOptions));
     }
-  });
+  }, [plexAuthenticationResource.latest]);
 
   return (
-    <div class="flex rounded-lg bg-slate-200 -mt-12 max-w-4xl mx-auto h-72 p-6">
+    <Card title="Authentication">
+      {JSON.stringify(webAuthnResponse())}
+      {JSON.stringify(pin)}
+      {JSON.stringify(plexTokenResource())}
+      {JSON.stringify(plexAuthenticationResource())}
+      {JSON.stringify(webauthnResource())}
       <Show
         when={plexTokenResource.loading || plexAuthenticationResource.loading}
       >
         <div class="m-auto">
-          <CircleNotchIcon class="animate-spin text-gray-700 w-16 h-16" />
+          {/* <CircleNotchIcon class="animate-spin text-gray-700 w-16 h-16" /> */}
         </div>
       </Show>
       <Show
@@ -75,7 +83,7 @@ export const Callback: Component = () => {
 
       <Show when={webauthnResource.loading}>
         <div class="m-auto">
-          <SpinnerIcon class="animate-spin text-gray-700 w-16 h-16" />
+          {/* <SpinnerIcon class="animate-spin text-gray-700 w-16 h-16" /> */}
         </div>
       </Show>
       <Show when={webauthnResource.latest}>
@@ -85,6 +93,6 @@ export const Callback: Component = () => {
       </Show>
 
       {JSON.stringify(webAuthnResponse())}
-    </div>
+    </Card>
   );
 };

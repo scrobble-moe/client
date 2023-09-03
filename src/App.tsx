@@ -1,18 +1,23 @@
+import "@fontsource/vt323";
+import { Route, Routes } from "@solidjs/router";
 import type { Component } from "solid-js";
-import { Dashboard } from "./pages/Dashboard.jsx";
-import { Routes, Route } from "@solidjs/router";
-import { Redirect } from "./pages/Auth/Redirect.jsx";
-import { Callback } from "./pages/Auth/Callback.jsx";
 import "./index.css";
 import { Authenticated } from "./layout/Authenticated/index.jsx";
-import { Public } from "./layout/Public/index.jsx";
+import { Shared } from "./layout/Shared/index.jsx";
 import { AniList } from "./pages/Auth/AniList.jsx";
+import { Callback } from "./pages/Auth/Callback.jsx";
+import { Redirect } from "./pages/Auth/Redirect.jsx";
+import { Dashboard } from "./pages/Dashboard.jsx";
+import { Landing } from "./pages/Landing.jsx";
+import { UI } from "./pages/UI.jsx";
 
 const App: Component = () => {
   return (
-    <div class="h-screen bg-[#E6D584]">
+    <div class="h-screen bg-one">
       <Routes>
-        <Route path="/" component={Public}>
+        <Route path="/" component={Shared}>
+          <Route path="/landing" component={Landing} />
+          <Route path="/ui" component={UI} />
           <Route path="/" component={Dashboard} />
           <Route path="/auth">
             <Route path="/redirect" component={Redirect} />
