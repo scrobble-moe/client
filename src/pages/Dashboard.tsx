@@ -23,7 +23,7 @@ export const Dashboard: Component = () => {
     getTokens,
     revokeToken,
   } = useClient(AuthService)();
-  const { getAuthenticators, getScrobbles } = useClient(ModelService)();
+  const { getAuthenticators, getScrobbleGroups } = useClient(ModelService)();
 
   createEffect(async () => {
     if (registrationOptions()) {
@@ -48,12 +48,12 @@ export const Dashboard: Component = () => {
     getAuthenticators({}),
   );
 
-  const [scrobblesResponse, scrobblesActions] = createResource(() =>
-    getScrobbles({}),
+  const [scrobbleGroupsResponse, scrobbleGroupsActions] = createResource(() =>
+    getScrobbleGroups({}),
   );
 
   createEffect(() => {
-    console.log(scrobblesResponse());
+    console.log(scrobbleGroupsResponse());
   });
 
   const [tokensResponse, tokensActions] = createResource(() => getTokens({}));
@@ -62,7 +62,7 @@ export const Dashboard: Component = () => {
     <div class="flex gap-3 w-full">
       <div class="w-1/2">
         <div class="flex flex-wrap gap-3">
-          <For each={scrobblesResponse()?.scrobbles}>
+          <For each={scrobbleGroupsResponse()?.scrobbleGroups}>
             {(item) => (
               <AnimeCard
                 title={item.anime.title}
@@ -91,7 +91,7 @@ export const Dashboard: Component = () => {
                   setRegistrationOptions(options.options);
                 });
               }}
-              class="p-2 shrink-0 bg-slate-400 hover:bg-slate-500 flex cursor-pointer "
+              class="p-2 shrink-0 bg-slate-400 hover:bg-slate-500 flex cursor-pointer"
             >
               Register new authenticator.
             </button>

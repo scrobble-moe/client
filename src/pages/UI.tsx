@@ -1,5 +1,5 @@
 import { Motion } from "@motionone/solid";
-import { Component, For, JSXElement } from "solid-js";
+import { Component, For, JSX, JSXElement } from "solid-js";
 
 export const UI: Component = () => {
   const anime = [
@@ -42,8 +42,8 @@ export const UI: Component = () => {
           <div class="flex justify-between p-4">
             <div class="my-auto">Header</div>
             <div class="flex gap-3 my-auto">
-              <Button />
-              <Button />
+              <Button>f</Button>
+              <Button>f</Button>
             </div>
           </div>
           <div class="bg-three p-4 h-full flex flex-col">
@@ -85,7 +85,12 @@ export const AnimeCard: Component<AnimeCardProps> = (props) => {
   );
 };
 
-export const Button: Component = () => {
+export interface ButtonProps
+  extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: JSXElement;
+}
+
+export const Button: Component<ButtonProps> = (props) => {
   return (
     <Motion.button
       hover={{
@@ -97,7 +102,7 @@ export const Button: Component = () => {
       type="button"
       class="flex items-center justify-center rounded-xl h-12 w-12 bg-three text-gray-900 drop-shadow-md"
     >
-      A
+      {props.children}
     </Motion.button>
   );
 };
@@ -113,8 +118,8 @@ export const Card: Component<CardProps> = (props) => {
       <div class="flex justify-between p-4">
         <div class="my-auto">{props.title}</div>
         <div class="flex gap-3 my-auto">
-          <Button />
-          <Button />
+          <Button>f</Button>
+          <Button>f</Button>
         </div>
       </div>
       <div class="bg-three p-4 h-full flex flex-col">{props.children}</div>
@@ -156,7 +161,8 @@ const Histogram: Component<HistogramProps> = (props) => {
   );
 };
 
-export interface TextButtonProps {
+export interface TextButtonProps
+  extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
   children: JSXElement;
 }
 
@@ -170,7 +176,7 @@ export const TextButton: Component<TextButtonProps> = (props) => {
         scale: 0.95,
       }}
       type="button"
-      class="flex items-center justify-center rounded-xl h-12 px-3 bg-three text-gray-900 drop-shadow-md"
+      class="flex items-center justify-center rounded-xl h-12 px-3 bg-three text-textOne drop-shadow-md"
       {...props}
     />
   );

@@ -5,7 +5,7 @@ import { TextButton } from "./UI.jsx";
 
 export const Landing: Component = () => {
   return (
-    <div class="flex flex-col bg-two rounded-xl drop-shadow-md m-auto md:w-1/2 p-8 gap-8">
+    <div class="flex flex-col m-auto gap-8">
       <div class="flex mx-auto gap-8">
         <img
           src="/plex-logo-full-color-on-white.svg"

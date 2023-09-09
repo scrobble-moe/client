@@ -12,6 +12,8 @@ export default {
         three: "#fcfcfc",
         four: "#ffddae",
         five: "#f9efe6",
+        textOne: "#433e39",
+        textTwo: "#968878",
       },
     },
   },

@@ -6,11 +6,11 @@ import {
   createResource,
   createSignal,
 } from "solid-js";
+import { BallTriangle } from "solid-spinner";
 import { useClient } from "../../hooks/useClient.jsx";
-// import { CircleNotchIcon, SpinnerIcon } from "solid-phosphor/regular";
 import { startWebauthn } from "../../util/auth.js";
 import { plexOauth } from "../../util/plex.js";
-import { Card } from "../UI.jsx";
+import { TextButton } from "../UI.jsx";
 
 export const Callback: Component = () => {
   const authClient = useClient(AuthService)();
@@ -18,6 +18,9 @@ export const Callback: Component = () => {
   const [webAuthnResponse, setWebAuthnResponse] = createSignal<string>();
 
   const pin = parseInt(localStorage.getItem("plexPin"));
+  if (!pin) {
+    window.location.href = "/landing";
+  }
   localStorage.removeItem("plexPin");
 
   const [plexTokenResource] = createResource(() =>
@@ -36,27 +39,26 @@ export const Callback: Component = () => {
   });
 
   createEffect(async () => {
-    console.log(plexAuthenticationResource.latest);
+    webAuthn();
+  }, [plexAuthenticationResource.latest]);
 
+  const webAuthn = async () => {
     if (plexAuthenticationResource.latest) {
       const { webauthnOptions } = plexAuthenticationResource.latest;
       setWebAuthnResponse(await startWebauthn(webauthnOptions));
     }
-  }, [plexAuthenticationResource.latest]);
+  };
 
   return (
-    <Card title="Authentication">
-      {JSON.stringify(webAuthnResponse())}
-      {JSON.stringify(pin)}
-      {JSON.stringify(plexTokenResource())}
-      {JSON.stringify(plexAuthenticationResource())}
-      {JSON.stringify(webauthnResource())}
+    <>
       <Show
-        when={plexTokenResource.loading || plexAuthenticationResource.loading}
+        when={
+          plexTokenResource.loading ||
+          plexAuthenticationResource.loading ||
+          webauthnResource.loading
+        }
       >
-        <div class="m-auto">
-          {/* <CircleNotchIcon class="animate-spin text-gray-700 w-16 h-16" /> */}
-        </div>
+        <BallTriangle class="text-textOne" />
       </Show>
       <Show
         when={
@@ -65,34 +67,14 @@ export const Callback: Component = () => {
           webauthnResource.error
         }
       >
-        <p>Token Error: {plexTokenResource.error.message}</p>
-        <p>Authenticate Error: {plexAuthenticationResource.error.message}</p>
-        <p>Webauthn Error: {webauthnResource.error.message}</p>
+        <p>Error</p>
       </Show>
+
       <Show
         when={plexTokenResource.latest && plexAuthenticationResource.latest}
       >
-        <div>
-          <img
-            src={plexAuthenticationResource.latest.avatarUrl}
-            alt="Plex Avatar"
-          />
-          <p>{plexAuthenticationResource.latest.username}</p>
-        </div>
+        <TextButton onclick={() => webAuthn}>Authenticate</TextButton>
       </Show>
-
-      <Show when={webauthnResource.loading}>
-        <div class="m-auto">
-          {/* <SpinnerIcon class="animate-spin text-gray-700 w-16 h-16" /> */}
-        </div>
-      </Show>
-      <Show when={webauthnResource.latest}>
-        <div>
-          <p>{JSON.stringify(webauthnResource.latest)}</p>
-        </div>
-      </Show>
-
-      {JSON.stringify(webAuthnResponse())}
-    </Card>
+    </>
   );
 };
