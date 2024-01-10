@@ -2,15 +2,9 @@ import { AuthService } from "@buf/scrobble-moe_protobufs.bufbuild_connect-es/moe
 import { FeedService } from "@buf/scrobble-moe_protobufs.bufbuild_connect-es/moe/scrobble/feed/v1/feed_service_connect.js";
 import { ModelService } from "@buf/scrobble-moe_protobufs.bufbuild_connect-es/moe/scrobble/model/v1/model_service_connect.js";
 import { startRegistration } from "@simplewebauthn/browser";
-import {
-  Component,
-  For,
-  createEffect,
-  createResource,
-  createSignal,
-} from "solid-js";
+import { For, createEffect, createResource, createSignal } from "solid-js";
+import type { Component } from "solid-js";
 import { useClient } from "../hooks/useClient.jsx";
-import { AsyncIterableConsumer } from "../util/AsyncIterableConsumer.jsx";
 import { AnimeCard, Card } from "./UI.jsx";
 
 export const Dashboard: Component = () => {
@@ -95,7 +89,6 @@ export const Dashboard: Component = () => {
             >
               Register new authenticator.
             </button>
-
             <For each={authenticatorsResponse()?.authenticators}>
               {(item) => (
                 <div class="rounded-md p-2 m-2 bg-slate-200 flex justify-between">

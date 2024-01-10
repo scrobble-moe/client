@@ -1,11 +1,5 @@
 import { ModelService } from "@buf/scrobble-moe_protobufs.bufbuild_connect-es/moe/scrobble/model/v1/model_service_connect.js";
-import {
-  Component,
-  Show,
-  createEffect,
-  createResource,
-  createSignal,
-} from "solid-js";
+import { type Component, createEffect, createSignal } from "solid-js";
 import { useClient } from "../../hooks/useClient.jsx";
 // import { useGraphQL } from "../../GraphQLProvider.jsx";
 // import {
@@ -47,7 +41,6 @@ export const AniList: Component = () => {
     <div>
       Data:
       {code()}
-
       {/* <Show when={addLinkedAccountResource.loading}>
         <CircleNotchIcon class="animate-spin" />
       </Show>

@@ -1,6 +1,7 @@
 import { Motion } from "@motionone/solid";
 import { A } from "@solidjs/router";
-import { Component, createEffect, createSignal } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
+import type { Component } from "solid-js";
 import { TextButton } from "./UI.jsx";
 
 export const Landing: Component = () => {

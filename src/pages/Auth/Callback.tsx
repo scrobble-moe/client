@@ -1,11 +1,6 @@
 import { AuthService } from "@buf/scrobble-moe_protobufs.bufbuild_connect-es/moe/scrobble/auth/v1/auth_service_connect.js";
-import {
-  Component,
-  Show,
-  createEffect,
-  createResource,
-  createSignal,
-} from "solid-js";
+import { Show, createEffect, createResource, createSignal } from "solid-js";
+import type { Component } from "solid-js";
 import { BallTriangle } from "solid-spinner";
 import { useClient } from "../../hooks/useClient.jsx";
 import { startWebauthn } from "../../util/auth.js";
@@ -17,7 +12,7 @@ export const Callback: Component = () => {
 
   const [webAuthnResponse, setWebAuthnResponse] = createSignal<string>();
 
-  const pin = parseInt(localStorage.getItem("plexPin"));
+  const pin = Number.parseInt(localStorage.getItem("plexPin"));
   if (!pin) {
     window.location.href = "/landing";
   }

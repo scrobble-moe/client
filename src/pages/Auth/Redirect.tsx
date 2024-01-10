@@ -1,4 +1,4 @@
-import { Component, Show, createEffect, createResource } from "solid-js";
+import { type Component, Show, createEffect, createResource } from "solid-js";
 import { BallTriangle } from "solid-spinner";
 import { plexOauth } from "../../util/plex.js";
 

@@ -1,5 +1,6 @@
 import { Motion } from "@motionone/solid";
-import { Component, For, JSX, JSXElement } from "solid-js";
+import type { Component, JSX, JSXElement } from "solid-js";
+import { For } from "solid-js";
 
 export const UI: Component = () => {
   const anime = [

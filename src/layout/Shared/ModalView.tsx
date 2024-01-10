@@ -1,5 +1,5 @@
 import { Outlet } from "@solidjs/router";
-import { Component } from "solid-js";
+import type { Component } from "solid-js";
 
 export const ModalView: Component = () => {
   return (

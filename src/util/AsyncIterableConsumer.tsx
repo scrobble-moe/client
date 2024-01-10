@@ -1,5 +1,5 @@
-import { createSignal, Component, JSXElement } from "solid-js";
-
+import { createSignal } from "solid-js";
+import type { Component, JSXElement } from "solid-js";
 interface AsyncIterableConsumerProps<T> {
   asyncIterable: AsyncIterable<T>;
   children: (items: T[]) => JSXElement;
